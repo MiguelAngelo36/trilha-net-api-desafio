@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
+using Microsoft.AspNetCore.Mvc; 
 using TrilhaApiDesafio.Context;
 using TrilhaApiDesafio.Models;
 
@@ -22,7 +21,7 @@ namespace TrilhaApiDesafio.Controllers
             var tarefa = _context.Tarefas.Find(id);
             if (tarefa == null)
                 return NotFound();
-            return Ok();
+            return Ok(tarefa);
         }
 
         [HttpGet("ObterTodos")]
@@ -75,6 +74,11 @@ namespace TrilhaApiDesafio.Controllers
 
             if (tarefa.Data == DateTime.MinValue)
                 return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
+                tarefaBanco.Titulo = tarefa.Titulo;
+                tarefaBanco.Descricao = tarefa.Descricao;
+                tarefaBanco.Status = tarefa.Status;
+                tarefaBanco.Data = tarefa.Data;
+            
             _context.Tarefas.Update(tarefaBanco);
             _context.SaveChanges();
             return Ok(tarefaBanco);
